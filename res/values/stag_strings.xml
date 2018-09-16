@@ -95,4 +95,8 @@
     <string name="hidelock_apps_help">Help</string>
     <string name="hidelock_apps_info_hidden">Hidden apps and their widgets are hidden from the drawer</string>
     <string name="hidelock_apps_info_protected">Protected apps require authentication to be opened from the launcher</string>
+
+    <!-- Swipe down to clear recents -->
+    <string name="allow_swipe_down_clearall_title">Clear all on swipe down from recents view</string>
+    <string name="allow_swipe_down_clearall_desc">Doesn\'t works if P navbar gestures are enable</string>
 </resources>
