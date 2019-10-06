@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
-* Copyright (C) 2016 The Android Open Source Project
+* Copyright (C) 2020-2022 StagOS
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -46,5 +46,8 @@
     <!-- All apps themed icons -->
     <string name="pref_themed_icons_title">All apps themed icons</string>
     <string name="pref_themed_icons_summary">Toggle to switch between homescreen dock and all apps themed icons</string>
+
+    <!-- Folder titles -->
+    <string name="google_folder_title" translatable="false">Google</string>
 
 </resources>
