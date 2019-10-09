@@ -62,11 +62,23 @@
 
     <!-- Grid -->
     <string name="num_default">Default</string>
-    <string name="grid_category_title">Columns and rows</string>
     <string name="number_of_columns_title">Grid and app drawer columns</string>
     <string name="number_of_rows_title">Grid and app drawer rows</string>
     <string name="number_of_hotseat_title">Homescreen quicklaunch icons</string>
     <string name="state_loading">Applying\u2026</string>
-    <string name="app_drawer_category_title">App drawer</string>
 
+    <!-- General -->
+    <string name="settings_title">Settings</string>
+
+    <!-- Categories -->
+    <string name="home_category_title">Home screen</string>
+    <string name="home_category_summary">Set Google now panel and more</string>
+    <string name="icons_category_title">Icons</string>
+    <string name="icons_category_summary">Set icon shape and more</string>
+    <string name="grid_category_title">Grid</string>
+    <string name="grid_category_summary">Customize grid size</string>
+    <string name="app_drawer_category_title">App drawer</string>
+    <string name="app_drawer_category_summary">Customize your app drawer</string>
+    <string name="misc_category_title">Miscellaneous</string>
+    <string name="misc_category_summary">Other options</string>
 </resources>

@@ -6,14 +6,14 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
-import com.android.launcher3.settings.SettingsActivity;
+import com.android.launcher3.settings.SettingsIcons;
 
 import com.aosp.launcher.customization.IconDatabase;
 import com.aosp.launcher.settings.IconPackPrefSetter;
 import com.aosp.launcher.settings.ReloadingListPreference;
 import com.aosp.launcher.util.AppReloader;
 
-public class AospSettings extends SettingsActivity {
+public class AospIconSettings extends SettingsIcons {
     public interface OnResumePreferenceCallback {
         void onResume();
     }
@@ -24,7 +24,7 @@ public class AospSettings extends SettingsActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public static class AospSettingsFragment extends LauncherSettingsFragment {
+    public static class AospIconSettingsFragment extends IconsSettingsFragment {
         private static final String KEY_ICON_PACK = "pref_icon_pack";
 
         @Override

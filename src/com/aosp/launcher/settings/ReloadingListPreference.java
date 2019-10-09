@@ -5,10 +5,10 @@ import android.util.AttributeSet;
 
 import androidx.preference.ListPreference;
 
-import com.aosp.launcher.AospSettings;
+import com.aosp.launcher.AospIconSettings;
 
 public class ReloadingListPreference extends ListPreference
-        implements AospSettings.OnResumePreferenceCallback {
+        implements AospIconSettings.OnResumePreferenceCallback {
     public interface OnReloadListener {
         void updateList(ListPreference pref);
     }
