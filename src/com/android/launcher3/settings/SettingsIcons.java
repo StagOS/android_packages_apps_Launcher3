@@ -35,22 +35,20 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartFragmentCallback;
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback;
-import androidx.preference.PreferenceGroup;
 import androidx.preference.PreferenceGroup.PreferencePositionCallback;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.launcher3.DeviceProfile;
+import com.android.launcher3.customization.IconDatabase;
+import com.android.launcher3.icons.pack.IconPackSettingsActivity;import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.InvariantDeviceProfile;
 import com.android.launcher3.LauncherAppState;
 import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.model.WidgetsModel;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
@@ -58,12 +56,11 @@ import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
 /**
  * Settings activity for Launcher.
  */
-public class SettingsActivity extends CollapsingToolbarBaseActivity
+public class SettingsIcons extends CollapsingToolbarBaseActivity
         implements OnPreferenceStartFragmentCallback, OnPreferenceStartScreenCallback,
         SharedPreferences.OnSharedPreferenceChangeListener{
 
-    /** List of fragments that can be hosted by this activity. */
-    private static final String FLAGS_PREFERENCE_KEY = "flag_toggler";
+    private static final String NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging";
 
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     public static final String EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args";
@@ -96,7 +93,7 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
 
             final FragmentManager fm = getSupportFragmentManager();
             final Fragment f = fm.getFragmentFactory().instantiate(getClassLoader(),
-                    getString(R.string.settings_fragment_name));
+                    getString(R.string.icons_settings_fragment_name));
             f.setArguments(args);
             // Display the fragment as the main content.
             fm.beginTransaction().replace(com.android.settingslib.widget.R.id.content_frame, f).commit();
@@ -119,7 +116,7 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
             f.setArguments(args);
             ((DialogFragment) f).show(fm, key);
         } else {
-            startActivity(new Intent(this, SettingsActivity.class)
+            startActivity(new Intent(this, SettingsIcons.class)
                     .putExtra(EXTRA_FRAGMENT, fragment)
                     .putExtra(EXTRA_FRAGMENT_ARGS, args));
         }
@@ -136,7 +133,7 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
     public boolean onPreferenceStartScreen(PreferenceFragmentCompat caller, PreferenceScreen pref) {
         Bundle args = new Bundle();
         args.putString(PreferenceFragmentCompat.ARG_PREFERENCE_ROOT, pref.getKey());
-        return startPreference(getString(R.string.settings_title), args, pref.getKey());
+        return startPreference(getString(R.string.icons_category_title), args, pref.getKey());
     }
 
     @Override
@@ -148,11 +145,11 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     /**
      * This fragment shows the launcher preferences.
      */
-    public static class LauncherSettingsFragment extends PreferenceFragmentCompat {
+    public static class IconsSettingsFragment extends PreferenceFragmentCompat implements
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
         private String mHighLightKey;
         private boolean mPreferenceHighlighted = false;
@@ -170,23 +167,26 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
             }
 
             getPreferenceManager().setSharedPreferencesName(LauncherFiles.SHARED_PREFERENCES_KEY);
-            setPreferencesFromResource(R.xml.launcher_preferences, rootKey);
+            setPreferencesFromResource(R.xml.launcher_icons_preferences, rootKey);
 
+            updatePreferences();
+
+            Utilities.getPrefs(getContext())
+                    .registerOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public void onDestroyView () {
+            Utilities.getPrefs(getContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+            super.onDestroyView();
+        }
+
+        private void updatePreferences() {
             PreferenceScreen screen = getPreferenceScreen();
             for (int i = screen.getPreferenceCount() - 1; i >= 0; i--) {
                 Preference preference = screen.getPreference(i);
-                if (preference instanceof PreferenceCategory) {
-                    PreferenceCategory category = (PreferenceCategory) preference;
-                    for (int j = category.getPreferenceCount() - 1; j >= 0; j--) {
-                        Preference pref = category.getPreference(j);
-                        if (!initPreference(pref, category)) {
-                            category.removePreference(pref);
-                        }
-                    }
-                    if (category.getPreferenceCount() == 0) {
-                        screen.removePreference(category);
-                    }
-                } else if (!initPreference(preference, screen)) {
+                if (!initPreference(preference)) {
                     screen.removePreference(preference);
                 }
             }
@@ -225,6 +225,15 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
             outState.putBoolean(SAVE_HIGHLIGHTED_KEY, mPreferenceHighlighted);
         }
 
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+            switch (key) {
+                case IconDatabase.KEY_ICON_PACK:
+                    updatePreferences();
+                    break;
+            }
+        }
+
         protected String getParentKeyForPref(String key) {
             return null;
         }
@@ -233,11 +242,14 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
          * Initializes a preference. This is called for every preference. Returning false here
          * will remove that preference from the list.
          */
-        protected boolean initPreference(Preference preference, PreferenceGroup group) {
+        protected boolean initPreference(Preference preference) {
             switch (preference.getKey()) {
-                case FLAGS_PREFERENCE_KEY:
-                    // Only show flag toggler UI if this build variant implements that.
-                    return FeatureFlags.showFlagTogglerUi(getContext());
+                case NOTIFICATION_DOTS_PREFERENCE_KEY:
+                    return !WidgetsModel.GO_DISABLE_NOTIFICATION_DOTS;
+
+                case IconDatabase.KEY_ICON_PACK:
+                    setupIconPackPreference(preference);
+                    return true;
             }
 
             return true;
@@ -290,5 +302,19 @@ public class SettingsActivity extends CollapsingToolbarBaseActivity
                 }
             });
         }
+
+
+        private void setupIconPackPreference(Preference preference) {
+            final String pkgLabel = IconDatabase.getGlobalLabel(getActivity());
+            preference.setSummary(pkgLabel);
+            preference.setOnPreferenceClickListener(p -> {
+                startActivity(new Intent(getActivity(), IconPackSettingsActivity.class));
+                return true;
+            });
+        }
+    }
+
+    public interface OnResumePreferenceCallback {
+        void onResume();
     }
 }
