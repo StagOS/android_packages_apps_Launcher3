@@ -90,7 +90,7 @@ public class BaseDepthController {
 
     public BaseDepthController(Launcher activity) {
         mLauncher = activity;
-        mMaxBlurRadius = activity.getResources().getInteger(R.integer.max_depth_blur_radius);
+        mMaxBlurRadius = (int) activity.getResources().getDimension(R.dimen.max_depth_blur_radius));
         mWallpaperManager = activity.getSystemService(WallpaperManager.class);
     }
 
