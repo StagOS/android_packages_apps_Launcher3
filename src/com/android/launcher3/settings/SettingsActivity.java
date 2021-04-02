@@ -23,7 +23,9 @@ import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERE
 import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
 import static com.android.launcher3.util.SecureSettingsObserver.newNotificationSettingsObserver;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
