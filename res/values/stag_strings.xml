@@ -146,4 +146,8 @@
     <string name="recents_clear_all_title">Clear all</string>
     <string name="recents_lens_title">Lens</string>
 
+    <!-- Hotseat Background -->
+    <string name="hotseat_bg_title">Hotseat background</string>
+    <string name="hotseat_bg_summary">Add translucent background to the app dock</string>
+
 </resources>
