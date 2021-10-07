@@ -117,6 +117,8 @@ android_library {
         "monet",
         "bcsmartspace-google",
         "SystemUIPluginLib",
+        "colorkt",
+        "themelib",
     ],
     manifest: "AndroidManifest-common.xml",
     sdk_version: "current",
