@@ -178,6 +178,7 @@ public final class Utilities {
     public static final String KEY_APP_DRAWER_OPACITY = "pref_app_drawer_opacity";
     public static final String KEY_RECENTS_MEMINFO = "pref_recents_meminfo";
     public static final String KEY_BLUR_DEPTH = "pref_blur_depth";
+    public static final String KEY_SEARCH_RADIUS = "pref_search_radius_size";
 
     /**
      * Returns true if theme is dark.
@@ -1051,5 +1052,10 @@ public final class Utilities {
         SharedPreferences prefs = getPrefs(context.getApplicationContext());
         return prefs.getInt(KEY_BLUR_DEPTH,
                 (int) context.getResources().getDimension(R.dimen.max_depth_blur_radius));
+    }
+
+    public static int getCornerRadius(Context context) {
+        SharedPreferences prefs = getPrefs(context.getApplicationContext());
+        return prefs.getInt(KEY_SEARCH_RADIUS, 100);
     }
 }

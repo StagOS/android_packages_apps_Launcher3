@@ -5,6 +5,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -24,10 +27,11 @@ import com.android.launcher3.views.ActivityContext;
 public class QsbLayout extends FrameLayout implements
         SharedPreferences.OnSharedPreferenceChangeListener {
 
-    ImageView mAssistantIcon;
-    ImageView mGoogleIcon;
-    ImageView mLensIcon;
-    Context mContext;
+    private ImageView mAssistantIcon;
+    private ImageView mGoogleIcon;
+    private ImageView mLensIcon;
+    private Context mContext;
+    private FrameLayout inner;
 
     public QsbLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,6 +49,11 @@ public class QsbLayout extends FrameLayout implements
         mAssistantIcon = findViewById(R.id.mic_icon);
         mGoogleIcon = findViewById(R.id.g_icon);
         mLensIcon = findViewById(R.id.lens_icon);
+        inner = findViewById(R.id.inner);
+
+        setUpMainSearch();
+        setUpBackground();
+        clipIconRipples();
         setIcons();
 
         Utilities.getPrefs(mContext).registerOnSharedPreferenceChangeListener(this);
@@ -60,6 +69,27 @@ public class QsbLayout extends FrameLayout implements
         }
     }
 
+    private void clipIconRipples() {
+        float cornerRadius = getCornerRadius();
+        PaintDrawable pd = new PaintDrawable(Color.TRANSPARENT);
+        pd.setCornerRadius(cornerRadius);
+        mAssistantIcon.setClipToOutline(cornerRadius > 0);
+        mAssistantIcon.setBackground(pd);
+        mLensIcon.setClipToOutline(cornerRadius > 0);
+        mLensIcon.setBackground(pd);
+    }
+
+    private void setUpBackground() {
+        float cornerRadius = getCornerRadius();
+        int color = Themes.getAttrColor(mContext, R.attr.qsbFillColor);
+        if (Utilities.isThemedIconsEnabled(mContext))
+            color = Themes.getColorBackgroundFloating(mContext);
+        PaintDrawable pd = new PaintDrawable(color);
+        pd.setCornerRadius(cornerRadius);
+        inner.setClipToOutline(cornerRadius > 0);
+        inner.setBackground(pd);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int requestedWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -68,13 +98,14 @@ public class QsbLayout extends FrameLayout implements
         DeviceProfile dp = ActivityContext.lookupContext(mContext).getDeviceProfile();
         int cellWidth = DeviceProfile.calculateCellWidth(requestedWidth, dp.cellLayoutBorderSpacePx.x, dp.numShownHotseatIcons);
         int iconSize = (int)(Math.round((dp.iconSizePx * 0.92f)));
-        int width = requestedWidth;
+        int widthReduction = cellWidth - iconSize;
+        int width = requestedWidth - widthReduction;
         setMeasuredDimension(width, height);
 
         for (int i = 0; i < getChildCount(); i++) {
             final View child = getChildAt(i);
             if (child != null) {
-                measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0);
+                measureChildWithMargins(child, widthMeasureSpec, widthReduction, heightMeasureSpec, 0);
             }
         }
     }
@@ -98,8 +129,15 @@ public class QsbLayout extends FrameLayout implements
         }
     }
 
+    private void setUpMainSearch() {
+        String searchPackage = QsbContainerView.getSearchWidgetPackageName(mContext);
+        setOnClickListener(view -> {
+            mContext.startActivity(new Intent("android.search.action.GLOBAL_SEARCH").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK).setPackage(searchPackage));
+        });
+    }
+
     private void enableLensIcon() {
-        mLensIcon.setVisibility(View.VISIBLE);
         mLensIcon.setOnClickListener(view -> {
             Intent lensIntent = new Intent();
             Bundle bundle = new Bundle();
@@ -114,4 +152,11 @@ public class QsbLayout extends FrameLayout implements
         });
     }
 
+    private float getCornerRadius() {
+        Resources res = mContext.getResources();
+        float qsbWidgetHeight = res.getDimension(R.dimen.qsb_widget_height);
+        float qsbWidgetPadding = res.getDimension(R.dimen.qsb_widget_vertical_padding);
+        float innerHeight = qsbWidgetHeight - 2 * qsbWidgetPadding;
+        return (innerHeight / 2) * ((float)Utilities.getCornerRadius(mContext) / 100f);
+    }
 }
