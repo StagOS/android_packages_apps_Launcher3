@@ -27,6 +27,7 @@
         android:orientation="horizontal">
 
         <Space
+            android:id="@+id/screenshot_space"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="1" />
@@ -53,9 +54,11 @@
             android:foreground="@drawable/ic_split_screen"
             android:foregroundGravity="center" />
         <Space
+            android:id="@+id/lens_space"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/action_lens"
@@ -66,11 +69,10 @@
             android:foregroundGravity="center" />
 
         <Space
-            android:id="@+id/lens_space"
+            android:id="@+id/clear_all_space"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1"
-            android:visibility="gone" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/action_clear_all"
