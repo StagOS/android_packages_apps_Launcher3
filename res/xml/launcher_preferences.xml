@@ -55,7 +55,7 @@
             android:targetClass="com.android.launcher3.settings.SettingsAppDrawer" />
     </Preference>
 
-    <!-- <Preference
+    <Preference
         android:key="recents"
         android:title="@string/recents_category_title"
         android:summary="@string/recents_category_summary"
@@ -65,7 +65,7 @@
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
             android:targetClass="com.android.launcher3.settings.SettingsRecents" />
-    </Preference> -->
+    </Preference>
 
     <Preference
         android:key="miscellaneous"
