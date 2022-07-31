@@ -87,6 +87,7 @@
     <!-- Settings Categories -->
     <string name="category_icon">ICON</string>
     <string name="category_misc">MISC</string>
+    <string name="category_google">Google</string>
 
     <!-- Smartspace -->
     <string name="smartspace_pref_title">At a Glance</string>
