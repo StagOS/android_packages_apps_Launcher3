@@ -88,4 +88,8 @@
     <string name="category_icon">ICON</string>
     <string name="category_misc">MISC</string>
 
+    <!-- Smartspace -->
+    <string name="smartspace_pref_title">At a Glance</string>
+    <string name="smartspace_pref_summary">Show smartspace at the top of home screen</string>
+
 </resources>
