@@ -19,8 +19,14 @@
         drawable="@array/grayscale_calendar_icons"
         package="com.google.android.calendar" />
     <icon
+        drawable="@array/grayscale_calendar_icons"
+        package="com.android.calendar" />
+    <icon
         drawable="@array/grayscale_clock_icons"
         package="com.google.android.deskclock" />
+    <icon
+        drawable="@array/grayscale_clock_icons"
+        package="com.android.deskclock" />
     <icon
         drawable="@drawable/themed_icon_accubattery"
         package="com.digibites.accubattery" />
@@ -162,6 +168,9 @@
     <icon
         drawable="@drawable/themed_icon_chrome"
         package="com.android.chrome" />
+    <icon
+        drawable="@drawable/themed_icon_chrome"
+        package="org.lineageos.jelly" />
     <icon
         drawable="@drawable/themed_icon_chrome_canary"
         package="com.chrome.canary" />
@@ -384,6 +393,9 @@
         drawable="@drawable/themed_icon_messages"
         package="com.google.android.apps.messaging" />
     <icon
+        drawable="@drawable/themed_icon_messages"
+        package="com.android.messaging" />
+    <icon
         drawable="@drawable/themed_icon_messenger"
         package="com.facebook.orca" />
     <icon
@@ -474,6 +486,15 @@
         drawable="@drawable/themed_icon_photos"
         package="com.google.android.apps.photos" />
     <icon
+        drawable="@drawable/themed_icon_photos"
+        package="com.oneplus.gallery" />
+    <icon 
+	drawable="@drawable/themed_icon_photos"
+	package="com.android.gallery3d" />
+    <icon
+	drawable="@drawable/themed_icon_photos"
+	package="com.android.gallery" />
+    <icon
         drawable="@drawable/themed_icon_gallery_go"
         package="com.google.android.apps.photosgo" />
     <icon
@@ -560,6 +581,9 @@
     <icon
         drawable="@drawable/themed_icon_retro_music"
         package="io.github.muntashirakon.Music.debug" />
+    <icon
+        drawable="@drawable/themed_icon_retro_music"
+        package="com.hardcodecoder.pulsemusic" />
     <icon
         drawable="@drawable/themed_icon_safety"
         package="com.google.android.apps.safetyhub" />
