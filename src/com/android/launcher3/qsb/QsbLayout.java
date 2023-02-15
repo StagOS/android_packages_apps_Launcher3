@@ -65,6 +65,7 @@ public class QsbLayout extends FrameLayout implements
         });
 
         if (Utilities.isGSAEnabled(mContext)) {
+            setupGIcon();
             enableLensIcon();
         }
     }
@@ -77,6 +78,8 @@ public class QsbLayout extends FrameLayout implements
         mAssistantIcon.setBackground(pd);
         mLensIcon.setClipToOutline(cornerRadius > 0);
         mLensIcon.setBackground(pd);
+        mGoogleIcon.setClipToOutline(cornerRadius > 0);
+        mGoogleIcon.setBackground(pd);
     }
 
     private void setUpBackground() {
@@ -134,6 +137,14 @@ public class QsbLayout extends FrameLayout implements
         setOnClickListener(view -> {
             mContext.startActivity(new Intent("android.search.action.GLOBAL_SEARCH").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK).setPackage(searchPackage));
+        });
+    }
+
+    private void setupGIcon() {
+        Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(Utilities.GSA_PACKAGE);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        mGoogleIcon.setOnClickListener(view -> {
+            mContext.startActivity(intent);
         });
     }
 
