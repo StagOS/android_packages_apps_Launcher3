@@ -20,7 +20,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
+import android.media.AudioManager;
 import android.util.AttributeSet;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -48,6 +50,8 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayout
         implements OnClickListener, Insettable, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private AudioManager mAudioManager;
 
     private final Rect mInsets = new Rect();
 
@@ -131,6 +135,7 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
         mClearAll = prefs.getBoolean(KEY_RECENTS_CLEAR_ALL, true);
         mLens = prefs.getBoolean(KEY_RECENTS_LENS, false);
         prefs.registerOnSharedPreferenceChangeListener(this);
+        mAudioManager = context.getSystemService(AudioManager.class);
     }
 
     @Override
@@ -181,6 +186,11 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
         } else if (id == R.id.action_split) {
             mCallbacks.onSplit();
         } else if (id == R.id.action_clear_all) {
+            // Play a dismiss sound
+            // This doesn't use the system sound pool because it's not a system sound
+            // DISMISS does not exist in SoundEffectConstants
+            mAudioManager.playSoundEffect(SoundEffectConstants.NAVIGATION_DOWN);
+
             mCallbacks.onClearAllTasksRequested();
         } else if (id == R.id.action_lens) {
             mCallbacks.onLens();
