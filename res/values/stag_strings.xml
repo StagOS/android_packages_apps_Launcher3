@@ -151,5 +151,5 @@
     <string name="hotseat_bg_summary">Add translucent background to the app dock</string>
 
     <!-- QSB -->
-    <string name="qsb_search_hint">Search your phone and more</string>
+    <string name="qsb_search_hint">Search your phone</string>
 </resources>
