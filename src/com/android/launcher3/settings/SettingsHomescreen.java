@@ -243,10 +243,10 @@ public class SettingsHomescreen extends CollapsingToolbarBaseActivity
                 case KEY_SUGGESTIONS:
                     return isAsiEnabled();
                 
-                case KEY_SEARCH_RADIUS:
+                case Utilities.KEY_SEARCH_RADIUS:
                     return isGsaEnabled();
 
-                case KEY_SHOW_HOTSEAT_BG:
+                case Utilities.KEY_SHOW_HOTSEAT_BG:
                     return isGsaEnabled();
     
                 default:
