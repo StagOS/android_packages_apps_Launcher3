@@ -29,7 +29,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
-import androidx.preference.ListPreference;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
@@ -142,6 +141,7 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
         mClearAll = prefs.getBoolean(KEY_RECENTS_CLEAR_ALL, true);
         mLens = prefs.getBoolean(KEY_RECENTS_LENS, false);
         prefs.registerOnSharedPreferenceChangeListener(this);
+        mMediaPlayer = MediaPlayer.create(context, CLEAR_ALL_SOUNDS[0]);
     }
 
     @Override
@@ -236,10 +236,8 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
     }
 
     public void playClearAllSound() {
-        ListPreference clearAllSounds = (ListPreference) findPreference(KEY_CLEAR_ALL_SOUNDS);
-        int sound = Integer.parseInt(clearAllSounds.getValue());
-        if (sound < 2) {
-            MediaPlayer.create(getContext(), CLEAR_ALL_SOUNDS[sound]).start();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.start();
         }
     }
 
