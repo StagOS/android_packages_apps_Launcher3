@@ -151,5 +151,12 @@
     <string name="hotseat_bg_summary">Add translucent background to the app dock</string>
 
     <!-- QSB -->
-    <string name="qsb_search_hint">Search your phone</string>
+    <string name="qsb_search_hint"></string>
+
+    <!-- Clear all sounds -->
+    <string name="clear_all_sounds_title">Clear all sound effect</string>
+    <string name="clear_all_sounds_summary">Set sound effect for clearing all recents</string>
+    <string name="clear_all_no_sound">No sound</string>
+    <string name="clear_all_tissue_swipe">Tissue swipe</string>
+    <string name="clear_all_soft_pop">Soft pop</string>
 </resources>

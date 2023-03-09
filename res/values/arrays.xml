@@ -46,4 +46,16 @@
         <item>com.android.launcher3.DEFAULT_MINUTE</item>
         <item>10</item>
     </array>
+
+    <array name="clear_all_sounds_entries">
+        <item>@string/clear_all_tissue_swipe</item>
+        <item>@string/clear_all_soft_pop</item>
+        <item>@string/clear_all_no_sound</item>
+    </array>
+
+    <array name="clear_all_sounds_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </array>
 </resources>

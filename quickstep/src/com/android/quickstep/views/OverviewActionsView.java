@@ -20,9 +20,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
-import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.util.AttributeSet;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,6 +29,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
+import androidx.preference.ListPreference;
 
 import com.android.launcher3.DeviceProfile;
 import com.android.launcher3.Insettable;
@@ -41,9 +41,10 @@ import com.android.launcher3.util.MultiValueAlpha.AlphaProperty;
 import com.android.launcher3.util.NavigationMode;
 import com.android.quickstep.TaskOverlayFactory.OverlayUICallbacks;
 import com.android.quickstep.util.LayoutUtils;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import java.util.ArrayList;
 
 /**
  * View for showing action buttons in Overview
@@ -51,7 +52,7 @@ import java.lang.annotation.RetentionPolicy;
 public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayout
         implements OnClickListener, Insettable, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private AudioManager mAudioManager;
+    private MediaPlayer mMediaPlayer;
 
     private final Rect mInsets = new Rect();
 
@@ -96,6 +97,12 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
     private static final String KEY_RECENTS_SCREENSHOT = "pref_recents_screenshot";
     private static final String KEY_RECENTS_CLEAR_ALL = "pref_recents_clear_all";
     private static final String KEY_RECENTS_LENS = "pref_recents_lens";
+    private static final String KEY_CLEAR_ALL_SOUNDS = "clear_all_sounds";
+
+    private static final int[] CLEAR_ALL_SOUNDS = {
+        R.raw.tissue_swipe,
+        R.raw.soft_pop,
+    };
 
     private MultiValueAlpha mMultiValueAlpha;
     private Button mSplitButton;
@@ -135,7 +142,6 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
         mClearAll = prefs.getBoolean(KEY_RECENTS_CLEAR_ALL, true);
         mLens = prefs.getBoolean(KEY_RECENTS_LENS, false);
         prefs.registerOnSharedPreferenceChangeListener(this);
-        mAudioManager = context.getSystemService(AudioManager.class);
     }
 
     @Override
@@ -187,10 +193,7 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
             mCallbacks.onSplit();
         } else if (id == R.id.action_clear_all) {
             // Play a dismiss sound
-            // This doesn't use the system sound pool because it's not a system sound
-            // DISMISS does not exist in SoundEffectConstants
-            mAudioManager.playSoundEffect(SoundEffectConstants.NAVIGATION_DOWN);
-
+            playClearAllSound();
             mCallbacks.onClearAllTasksRequested();
         } else if (id == R.id.action_lens) {
             mCallbacks.onLens();
@@ -230,6 +233,14 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
         }
         boolean isHidden = mHiddenFlags != 0;
         mMultiValueAlpha.getProperty(INDEX_HIDDEN_FLAGS_ALPHA).setValue(isHidden ? 0 : 1);
+    }
+
+    public void playClearAllSound() {
+        ListPreference clearAllSounds = (ListPreference) findPreference(KEY_CLEAR_ALL_SOUNDS);
+        int sound = Integer.parseInt(clearAllSounds.getValue());
+        if (sound < 2) {
+            MediaPlayer.create(getContext(), CLEAR_ALL_SOUNDS[sound]).start();
+        }
     }
 
     /**

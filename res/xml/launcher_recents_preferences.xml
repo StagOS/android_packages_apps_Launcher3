@@ -22,6 +22,16 @@
     <PreferenceCategory
         android:title="@string/general_category_title">
 
+        <ListPreference
+            android:key="clear_all_sounds"
+            android:title="@string/clear_all_sounds_title"
+            android:summary="@string/clear_all_sounds_summary"
+            android:persistent="true"
+            android:defaultValue="1"
+            android:entries="@array/clear_all_sounds_entries"
+            android:entryValues="@array/clear_all_sounds_values" />
+            <!-- android:dependency="pref_recents_clear_all" /> -->
+
         <SwitchPreference
             android:key="pref_recents_meminfo"
             android:title="@string/recents_meminfo_title"
@@ -36,6 +46,7 @@
             android:min="0"
             settings:units="%"
             android:defaultValue="40" />
+
    </PreferenceCategory>
 
     <PreferenceCategory
